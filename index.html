@@ -12,15 +12,6 @@
         font-family: "Press Start 2P", cursive;
         text-align: center;
         overflow: hidden;
-        animation: screenFlicker 0.15s infinite alternate;
-      }
-      @keyframes screenFlicker {
-        0% {
-          opacity: 1;
-        }
-        100% {
-          opacity: 0.98;
-        }
       }
       .container {
         width: 80%;
@@ -49,18 +40,10 @@
       .task {
         display: flex;
         justify-content: space-between;
+        align-items: center;
         border-bottom: 1px solid #00ff00;
         padding: 10px;
         cursor: pointer;
-        animation: glitch 0.3s infinite alternate;
-      }
-      @keyframes glitch {
-        0% {
-          transform: translateX(0);
-        }
-        100% {
-          transform: translateX(1px);
-        }
       }
       .completed {
         text-decoration: line-through;
