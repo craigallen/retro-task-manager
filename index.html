@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Retro Task Manager</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap");
+      body {
+        background-color: black;
+        color: #00ff00;
+        font-family: "Press Start 2P", cursive;
+        text-align: center;
+        overflow: hidden;
+        animation: screenFlicker 0.15s infinite alternate;
+      }
+      @keyframes screenFlicker {
+        0% {
+          opacity: 1;
+        }
+        100% {
+          opacity: 0.98;
+        }
+      }
+      .container {
+        width: 80%;
+        margin: auto;
+        padding-top: 20px;
+      }
+      input,
+      button {
+        font-family: inherit;
+        background: black;
+        color: #00ff00;
+        border: 2px solid #00ff00;
+        padding: 10px;
+        font-size: 14px;
+        margin: 5px;
+        text-transform: uppercase;
+      }
+      button:hover {
+        background: #00ff00;
+        color: black;
+      }
+      .task-list {
+        text-align: left;
+        margin-top: 20px;
+      }
+      .task {
+        display: flex;
+        justify-content: space-between;
+        border-bottom: 1px solid #00ff00;
+        padding: 10px;
+        cursor: pointer;
+        animation: glitch 0.3s infinite alternate;
+      }
+      @keyframes glitch {
+        0% {
+          transform: translateX(0);
+        }
+        100% {
+          transform: translateX(1px);
+        }
+      }
+      .completed {
+        text-decoration: line-through;
+      }
+      .error-message {
+        color: red;
+        font-size: 12px;
+        margin-top: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Retro Task Manager</h1>
+      <input type="text" id="taskInput" placeholder="Enter a task..." />
+      <button onclick="addTask()">Add Task</button>
+      <div id="errorMessage" class="error-message"></div>
+      <div class="task-list" id="taskList"></div>
+    </div>
+
+    <script>
+      let tasks = [];
+
+      function addTask() {
+        const taskInput = document.getElementById("taskInput");
+        const errorMessage = document.getElementById("errorMessage");
+        if (taskInput.value.trim() === "") {
+          errorMessage.textContent = "Error: Task cannot be empty!";
+          return;
+        }
+
+        errorMessage.textContent = "";
+
+        const newTask = {
+          id: Date.now(),
+          title: taskInput.value,
+          completed: false,
+        };
+
+        tasks.push(newTask);
+        taskInput.value = "";
+        renderTasks();
+      }
+
+      function toggleTask(id) {
+        tasks = tasks.map((task) =>
+          task.id === id ? { ...task, completed: !task.completed } : task
+        );
+        renderTasks();
+      }
+
+      function removeTask(id) {
+        tasks = tasks.filter((task) => task.id !== id);
+        renderTasks();
+      }
+
+      function renderTasks() {
+        const taskList = document.getElementById("taskList");
+        taskList.innerHTML = "";
+        tasks.forEach((task) => {
+          const taskElement = document.createElement("div");
+          taskElement.className = "task " + (task.completed ? "completed" : "");
+          taskElement.innerHTML = `
+                    <span onclick="toggleTask(${task.id})">${task.title}</span>
+                    <button onclick="removeTask(${task.id})">X</button>
+                `;
+          taskList.appendChild(taskElement);
+        });
+      }
+
+      document
+        .getElementById("taskInput")
+        .addEventListener("keypress", function (event) {
+          if (event.key === "Enter") {
+            addTask();
+          }
+        });
+    </script>
+  </body>
+</html>
